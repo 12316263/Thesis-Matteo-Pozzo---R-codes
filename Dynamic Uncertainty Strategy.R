@@ -627,22 +627,27 @@ hist(manufacturer_order_sizes,
 par(mfrow = c(1, 1))  # reset to default
 
 # -------------------------------
-# Retailer: Avg backorder costs (all scenarios)
+# Dot plot: Avg backorder costs Retailer vs Manufacturer (with values)
 # -------------------------------
-barplot(mean(retailer_full_summary$backorder_per_day),
-        names.arg = "Retailer",
-        col = "blue",
-        ylab = "Avg Backorder Cost per Day",
-        main = "Dynamic Strat. - Retailer: Avg Backorder Costs Throughout All Scenarios")
+val_retailer <- mean(retailer_full_summary$backorder_per_day, na.rm = TRUE)
+val_manufacturer <- mean(manufacturer_full_summary$backorder_per_day, na.rm = TRUE)
 
-# -------------------------------
-# Manufacturer: Avg backorder costs (all scenarios)
-# -------------------------------
-barplot(mean(manufacturer_full_summary$backorder_per_day),
-        names.arg = "Manufacturer",
-        col = "red",
-        ylab = "Avg Backorder Cost per Day",
-        main = "Dynamic Strat. - Manufacturer: Avg Backorder Costs Throughout All Scenarios")
+# Plot the dots
+plot(1:2, c(val_retailer, val_manufacturer),
+     pch = 19, col = c("blue", "red"), cex = 3,
+     xaxt = "n", xlab = "",
+     ylab = "Avg Backorder Cost per Day",
+     main = "Dynamic Strat. - Avg Backorder Costs")
+axis(1, at = 1:2, labels = c("Retailer", "Manufacturer"))
+
+# Add numeric values beside both dots
+text(x = 1, y = val_retailer,
+     labels = round(val_retailer, 0),
+     pos = 4, cex = 1, col = "black")
+
+text(x = 2, y = val_manufacturer,
+     labels = round(val_manufacturer, 0),
+     pos = 4, cex = 1, col = "black")
 
 # -------------------------------
 # Retailer: Avg backorders vs lead time

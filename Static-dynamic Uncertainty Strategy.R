@@ -613,29 +613,32 @@ hist(avg_order_size_manufacturer,
 par(mfrow = c(1, 1))
 
 # ------------------------------------------------------------
-# Barplot: Average Backorder Cost (All Scenarios)
+# Dot plot: Avg backorder costs
 # ------------------------------------------------------------
 T_perf <- 365
 
 # --- Retailer ---
 avg_BO_retailer <- mean(retailer_prescreen$retailer_cost_BO / T_perf, na.rm = TRUE)
 
-barplot(avg_BO_retailer,
-        names.arg = "Retailer",
-        col = "blue",
-        main = "Static-Dynamic Strat. - Retailer: Avg Backorder Costs Throughout All Scenarios",
-        ylab = "Avg Backorder Cost per Day",
-        ylim = c(0, max(avg_BO_retailer, 1.1 * avg_BO_retailer)))
-
 # --- Manufacturer ---
 avg_BO_manufacturer <- mean(manufacturer_prescreen$manufacturer_cost_BO / T_perf, na.rm = TRUE)
 
-barplot(avg_BO_manufacturer,
-        names.arg = "Manufacturer",
-        col = "red",
-        main = "Static-Dynamic Strat. - Manufacturer: Avg Backorder Costs Throughout All Scenarios",
-        ylab = "Avg Backorder Cost per Day",
-        ylim = c(0, max(avg_BO_manufacturer, 1.1 * avg_BO_manufacturer)))
+# --- Plot both as dots ---
+plot(1:2, c(avg_BO_retailer, avg_BO_manufacturer),
+     pch = 19, col = c("blue", "red"), cex = 3,
+     xaxt = "n", xlab = "",
+     ylab = "Avg Backorder Cost per Day",
+     main = "Static-Dynamic Strat. - Avg Backorder Costs")
+axis(1, at = 1:2, labels = c("Retailer", "Manufacturer"))
+
+# --- Add numeric values next to both dots ---
+text(x = 1, y = avg_BO_retailer, 
+     labels = round(avg_BO_retailer, 0),
+     pos = 4, cex = 1, col = "black")
+
+text(x = 2, y = avg_BO_manufacturer, 
+     labels = round(avg_BO_manufacturer, 0),
+     pos = 4, cex = 1, col = "black")
 
 # ------------------------------------------------------------
 # Line plot: Average Backorders vs Lead Time
@@ -683,4 +686,3 @@ avg_supply_chain_year <- mean(full_grid_summary$total_cost, na.rm = TRUE)
 cat("Average Retailer Cost over 1 year:", avg_retailer_year, "\n")
 cat("Average Manufacturer Cost over 1 year:", avg_manufacturer_year, "\n")
 cat("Average Supply Chain Cost over 1 year:", avg_supply_chain_year, "\n")
-

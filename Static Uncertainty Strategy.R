@@ -469,7 +469,7 @@ hist(manufacturer_order_sizes,
 par(mfrow = c(1, 1))
 
 # ------------------------------------------------------------
-# Aggregated Average Backorder Costs (per day)
+# Dot plot: Avg backorder costs (Static strategy)
 # ------------------------------------------------------------
 T_perf <- 365
 
@@ -479,24 +479,22 @@ avg_backorder_retailer <- mean(Results$retailer_backorder / T_perf, na.rm = TRUE
 # --- Manufacturer aggregated value ---
 avg_backorder_manufacturer <- mean(Results$manufacturer_backorder / T_perf, na.rm = TRUE)
 
-# --- Plot separately ---
-par(mfrow = c(1, 2))
+# --- Plot both as dots ---
+plot(1:2, c(avg_backorder_retailer, avg_backorder_manufacturer),
+     pch = 19, col = c("blue", "red"), cex = 3,
+     xaxt = "n", xlab = "",
+     ylab = "Avg Backorder Cost per Day",
+     main = "Static Strat. - Avg Backorder Costs")
+axis(1, at = 1:2, labels = c("Retailer", "Manufacturer"))
 
-barplot(avg_backorder_retailer,
-        names.arg = "Retailer",
-        col = "blue",
-        main = "Static Strat. - Retailer: Avg Backorder Costs Throughout All Scenarios",
-        ylab = "Avg Backorder Cost per Day",
-        ylim = c(0, max(avg_backorder_retailer, avg_backorder_manufacturer) * 1.2))
+# --- Add numeric values next to both dots ---
+text(x = 1, y = avg_backorder_retailer,
+     labels = round(avg_backorder_retailer, 0),
+     pos = 4, cex = 1, col = "black")
 
-barplot(avg_backorder_manufacturer,
-        names.arg = "Manufacturer",
-        col = "red",
-        main = "Static Strat. - Retailer: Avg Backorder Costs Throughout All Scenarios",
-        ylab = "Avg Backorder Cost per Day",
-        ylim = c(0, max(avg_backorder_retailer, avg_backorder_manufacturer) * 1.2))
-
-par(mfrow = c(1, 1))  # reset layout
+text(x = 2, y = avg_backorder_manufacturer,
+     labels = round(avg_backorder_manufacturer, 0),
+     pos = 4, cex = 1, col = "black")
 
 # ------------------------------------------------------------
 # Line Plot: Average Backorders vs Lead Time
@@ -545,4 +543,3 @@ total_year_supply_chain  <- total_year_retailer + total_year_manufacturer
 cat("Retailer Cost over 1 year:", round(total_year_retailer, 2), "\n")
 cat("Manufacturer Cost over 1 year:", round(total_year_manufacturer, 2), "\n")
 cat("Supply Chain Cost over 1 year:", round(total_year_supply_chain, 2), "\n")
-
